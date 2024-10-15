@@ -1,37 +1,38 @@
 <!-- Generate a focumentation with a list of sample prompt to demo github copilot capacities -->
 
-# Github Copilot Demos
+# Laboratório Módulo: PLUS - Explorando Github Copilot
 
 ## Pré-Requisitos:
 
 - Conta GitHub
 - IDE com suporte GitHub Copilot (VS Code, Visual Studio, JetBrains, Vim/Neovim) **Para esse laboratório estaremos usando VS Code**
+- [Extensao GitHub Copilot e GitHub Copilot Chat](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot)
 - Clonar repositório:
-  
+
+Abra o terminal e cole:  
+
    ```git
    git clone https://github.com/geovanams/github-copilot-demo.git
    cd github-copilot-demo
    code .
    ```
-- [Licença GitHub Copilot](https://github.com/settings/copilot)
-- [Extensao GitHub Copilot e GitHub Copilot Chat](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot)
   
-## VSCode Shortcuts
+## VSCode Shortcuts (Para ir usando durante as atividades)
 
-Depois de começar a digitar um prompt e o copilot gerar propostas, você poderá usar os seguintes atalhos para interagir com o Copilot:
+Quando você começar a realizar os passos dessa atividade digitando prompts e o copilot gerar propostas, você poderá usar os seguintes atalhos para interagir com o Copilot:
 - `tab` para aceitar inteiramente a sugestão atual (`mais comum`)
 - `ctrl + seta para a direita` para aceitar palavra por palavra a sugestão (`para uso parcial`)
 - `alt + ^` para passar para a próxima sugestão
 - `shift + tab` para voltar à sugestão anterior
 - `ctrl+enter` para exibir o painel do copiloto
 
-Se você não consegue se lembrar, basta passar o ponteiro sobre uma sugestão para que ela apareça.<br>
+Se você não consegue se lembrar, basta passar o ponteiro sobre uma sugestão para que ela apareça.
 
-# Demos
+# Atividades
 
 ## Natural Language Translations
 
-**Automate text translation**
+GitHub Copilot consegue traduzir linguagem natural e para trazer as sugestões ele considera a contexto do seu código.
 
 - Abra o arquivo `album-viewer/lang/translations.json`
 ```json
@@ -60,121 +61,21 @@ Nesse primeiro momento possa ser que ele não traga de imediato uma sugestão, p
 
 ## Code Generation
 
-**Generate code from prompt**
+**Gerando código a partir do prompt**
 
 - Abra o arquivo `album-viewer/utils/validators.ts`e inicie com o prompt:
 ```ts
-// validate date from text input and convert it to a date object
+// validar data de um input string e converter para um objeto do tipo Data
 ```
 
 - O Copilot também pode ajudá-lo a escrever `padrões RegExp`. Tente :
 
 ```ts
-// function that validates the format of a IPV6 address string
+// Funçao que valida o formate de uma string de um endereço IPV6
 ```
 <br>
 
 Você pode explorar as alternativas usando o atalho `ctrl+enter` para exibir mais sugestões.
-
-## Tests
-
-O Copilot pode ajudar a gerar todos os tipos de testes escritos com código. Inclui testes de `unidade, testes de integração, testes ponta a ponta e testes de carga` com scripts jmeters, por exemplo.
-
-- Abra o arquivo `albums-viewer/tests/validators.test.ts`
-
-Para ter uma boa sugestão de teste, você deve fornecer algumas informações básicas ao Copilot, como test framework que deseja usar. Insira no arquivo:
-
-```ts
-import { describe }
-```
-
-Quando você começar a digitar a função `describe`, o copilot verá que você está no arquivo de teste no TS e sugerirá que você importe as funções `describe` e `it` do Mochai, que é um famoso framework de teste para JS/TS.
-Aceite a sugestão e ela irá automaticamente sugerir também a função `expect` do Chai: aceite também.
-
-```ts
-import {describe, it} from 'mocha';
-import {expect} from 'chai';
-```
-
-Você tem sua estrutura de teste implementada! Agora basta importar as funções que deseja testar iniciando uma nova linha pela palavra-chave `import` o copilot verá que está em um arquivo de teste, para testar alguns `validators` por causa do nome e irá sugerir algo assim:
-
-```ts
-import {validateAlbumId} from '../src/validators';
-```
-
-Dependendo dos arquivos abertos disponíveis e o contexto, possa ser que ele gere o nome e caminho da função incorretamente. Portanto sempre é importante validar as sugestões!
-<br>
-
-- Aceite a sugestão e mude o caminho
-  
-- Adicione um comentário com a primeira função que deseja testar e deixe a mágica acontecer:
-
-```ts
-import {describe, it} from 'mocha';
-import {expect} from 'chai';
-
-import {validateDate, validateIPV6} from '../utils/validators';
-
-// test the validataDate function
-```
-Boom!
-```ts	
-describe('validateDate', () => {
-    it('should return a date object when given a valid date string', () => {
-        const date = '01/01/2019';
-        const expectedDate = new Date(2019, 0, 1);
-        expect(validateDate(date)).to.deep.equal(expectedDate);
-    });
-
-    it('should throw an error when given an invalid date string', () => {
-        const date = '01/01/2019';
-        expect(() => validateDate(date)).to.throw();
-    });
-});
-```
-
-*Você pode adicionar outro bloco `it` para adicionar mais casos de teste e também adicionar os testes para as outras funções
-
-## CI pipelines
-
-*O Copilot irá ajudá-lo a escrever seus arquivos de definição de pipeline para gerar o código para as diferentes steps e tasks.. Aqui estão alguns exemplos do que ele pode fazer:*
-- *gerar um arquivo de definição de pipeline `do zero`*
-- *acelerar a gravação de um arquivo de definição de pipeline `gerando o código` para as diferentes `steps, tasks e partes do script`*
-- *ajude a `descobrir tarefas e extensões do marketplace` que atendam às suas necessidades*
-
-### Step 1: gerando do Zero
-
-- No arquivo `.github/workflow/pipeline.yml` insira o seguinte prompt:
-
-```yml
-# Github Action pipeline that runs on push to main branch
-# Docker build and push the album-api image to ACR
-```
-
-*O Copilot irá gerar o pipeline bloco por bloco. Pipelines Yaml, às vezes você precisará pular para uma nova linha para acionar a geração do próximo bloco com mais frequência do que com outro tipo de código.*
-* Isso gera uma task com alguns erros provenientes de indentação incorreta ou falta de aspas no nome da task. Você pode corrigir isso facilmente com seu IDE e suas habilidades de desenvolvedor :)*
-
-### Step 2: Adicionar tasks a partir do prompt
-
-- Você provavelmente tem um github action workflow com pelo menos uma task de "login" no registro do contêiner e uma task de "docker build and deploy". Adicione um novo comentário após essas tasks para marcar(tag) a imagem do docker com o ID de execução do github e enviá-lo para o registro:
-
-```yml
-# tag the image with the github run id and push to ACR
-```
-
-- Teste outro prompt:
-```yml
-
-# deploy the album-api image to the dev AKS cluster
-```
-
-### Step 3: Adicionando scripts a partir dos prompts
-
-- O Copilot também é muito útil quando você precisa escrever um script personalizado como no exemplo a seguir:
-
-```yml
-# find and replace the %%VERSION%% by the github action run id in every appmanifest.yml file
-```
 
 ## Infra As Code
 
@@ -185,16 +86,12 @@ O Copilot também pode ajudá-lo a escrever infraestrutura como código. Ele pod
   
 ```js
 // Container Registry
-
-// Azure Congitive Services Custom Vision resource
 ```
 
 ### Terraform
 - Abra o arquivo `iac/app.tf`e comece a digitar prompts no final do arquivo para adicionar novos recursos:
 
 ```yml
-# Container Registry
-
 # Azure Congitive Services Custom Vision resource
 ```
 
@@ -203,23 +100,10 @@ O Copilot também pode ajudá-lo a escrever infraestrutura como código. Ele pod
 - Na aba Soure Control do VS Code adicione algum arquivo para stage e selecione o ícone de estrelas para gerar mensagens de commit.
 
 
-## Code Documentation 
+## Documentação
 
 O Copilot pode entender um prompt em linguagem natural e gerar código e, como é apenas uma linguagem, também pode "entender o código e explicá-lo em linguagem natural" para ajudá-lo a documentar seu código.
 
-### simple documentation comment
-
-Para isso, basta colocar o ponteiro sobre uma classe, um método ou qualquer linha de código e começar a digitar o manipulador de comentários do idioma selecionado para acionar o copiloto. Em linguagens como Java, C# ou TS por exemplo, basta digitar `// `.
-
-Aqui está um exemplo no arquivo `albums-viewer/routes/index.js`. Insira uma linha e comece a digitar na linha 13 dentro do `try block`
-
-```js
-router.get("/", async function (req, res, next) {
-  try {
-    // Invoke the album-api via Dapr
-    const url = `http://127.0.0.1:${DaprHttpPort}/v1.0/invoke/${AlbumService}/method/albums`;
-
-```
 
 ### standardized documentation comment (JavaDoc, JsDoc, etc...)
 
@@ -249,7 +133,7 @@ This documentation is generated with Github Copilot to show what the tool can do
 ##
 ```
 
-# Demo - GitHub Copilot Chat
+# Atividades de GitHub Copilot Chat
 
 GitHub Copilot é uma IA generativa e, portanto, perfeita para gerar código, mas possui poderosos recursos de análise de seu código que podem ser usados ​​em diversos casos para melhorar a qualidade do código, como: encontrar problemas de segurança, más práticas em seu código e gerar uma correção, refatorar e adicionar comentários ao código legado, gerar testes, etc...
 
@@ -283,11 +167,12 @@ Node script calculator
 - Com o arquivo aberto, vá ao chat e peça para ele uma explicação do código, você pode usar prompts como:
 
 ```
-Can you explain me what this code does?
+Me explique esse código
 ```
 ```
-Can you generate a function that returns a random number between 1 and 10?
+Pode gerar uma função que retorne um número entre 1 and 10?
 ```
+
 - Você também pode selecionar o código inteiro ou apenas um trecho, clicar com botão direito, clique em copilot e então explain. Será gerado uma explicação que aparecerá no chat.
 
 - Com o chat, você também pode pedir para ele gerar documentação:
@@ -337,27 +222,15 @@ Copilot pode ajudar a encontrar problemas de segurança em seu código e sugerir
 
 Abra o arquivo album-api/Controllers/UnsecuredController.cs e insira o seguinte prompt no chat:
 ```
-Can you check this code for security issues?
+Esse código possui problemas de segurança?
 ```
 O Copilot vai retornar os problemas de segurança identificados e sugestões de correção. Mas você também pode pedir especificamente para ele sugerir as correrções:
 ```
-Can you propose a fix?
+Pode me recomendar uma solução?
 ```
 
-## Refatorando Código
+## Traduzir código de uma linguagem para outra
 
-Copilot Chat pode ajudar a refatorar seu código. Pode ajudar com:
-`rename variables, extract methods, extract classes, etc...`
-
-- Com o arquivo album-api/Controllers/UnsecuredController.cs aberto, insira no chat:
-```
-extract methods
-```
-```
-create Async version of each methods when it makes sense
-```
-
-## Code Translation
 Copilot pode entender e gerar linguagem natural e linguagem de código, combinando você pode usar para `traduzir pedaços de código de una linguagem para outra`.
 
 - Abra o arquivo Validators.ts e solicite ao chat para traduzir para linguagem c:
@@ -365,6 +238,7 @@ Copilot pode entender e gerar linguagem natural e linguagem de código, combinan
 ```
 translate to C
 ```
+
 - Copilot também pode ajudar a traduzir códigos de linguagem legadas, porém como ele usa os repositórios públicos do GitHub, linguagens como Java, Javascript e .NET possuem maiores quantidades de código disponível, então a acertividade de retorno para essas linguagens são maiores.
 
 - Com o arquivo legacy/albums.cbl aberto, vamos traduzir para Python,  digite no chat:
@@ -374,13 +248,7 @@ translate to python
 
 Prontinho! Aqui você viu um pouco de como o GitHub Copilot e GitHub Copilot Chat podem ajudar a impulsionar a produtividade no fluxo de desenvolvimento. Continue a explorar essas funcionalidades para aplicar em seus cenários de desenvolvimento diário!
 
-# Desafio
-
-Executar um mini jogo de pedra, papel e tesoura: (Linguagem de sua escolha)
- - Mostrar quem venceu cada rodadada
- - A cada rodada mostrar o score
-
-**Opcional:** Executar em um container Docker.
+Parabéns por finalizar a última atividade do curso GitHub4Women!! 💜
 
 
 
