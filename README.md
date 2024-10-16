@@ -1,6 +1,6 @@
 # Github Copilot
 
-[Acesse o Laboratório](https://github.com/geovanams/github-copilot-demo/blob/main/COPILOT_DEMOS.md)
+[Acesse o Laboratório](https://github.com/geovanams/GHCopilotBRA/blob/main/COPILOT_DEMOS.md)
 
 Repositório usado como base de código para demonstrar os recursos do Github Copilot. (Forked from Azure Samples)
 
